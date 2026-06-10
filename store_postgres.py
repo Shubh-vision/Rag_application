@@ -28,4 +28,34 @@ def store_postgres(state):
     cur.close()
     conn.close()
 
+    # Trim after insert
+    trim_old_chats(keep_limit=5)
+
     return state
+
+
+
+
+def trim_old_chats(keep_limit=5):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+         DELETE FROM rag_answers
+        WHERE id IN (
+            SELECT id
+            FROM rag_answers
+            ORDER BY created_at DESC
+            OFFSET %s
+        )
+        RETURNING id;
+    """, (keep_limit,))
+
+    deleted = cursor.fetchall()
+
+    conn.commit()
+
+    print(f"🧹 Deleted {len(deleted)} old chats")
+
+    cursor.close()
+    conn.close()
