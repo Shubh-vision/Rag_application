@@ -59,7 +59,7 @@ vectorstore = PineconeVectorStore(
 # Load Document
 docs_by_url = get_docs()
 
-all_chunks = []
+all_chunks = []   # ONLY for BM25 + retriever (not blindly filled)
 
 for url, docs in docs_by_url.items():
     print(f"Processing {url}")
@@ -82,18 +82,16 @@ for url, docs in docs_by_url.items():
         # Check if already indexed
 
         first_chunk_id = hashlib.md5(f"{doc_id}_0".encode()).hexdigest()
-
         fetch_result = index.fetch(ids=[first_chunk_id])
+        already_indexed = (len(fetch_result.vectors) > 0)    
 
-        already_indexed = (
-            len(fetch_result.vectors) > 0
-        )
 
+        #chunking for BM25....it always needed
         chunks = create_chunks([doc])
-
-        all_chunks.extend(chunks)
+        all_chunks.extend(chunks)   # ALWAYS needed for BM25
         
-        
+        # ---------------- IMPORTANT FIX ----------------
+        # DO NOT chunk unless needed
         # Index Only If Needed
 
         if not already_indexed:
@@ -118,14 +116,12 @@ for url, docs in docs_by_url.items():
                 ids=ids
             )
 
-            print(
-                f"Indexed {len(chunks)} chunks"
-            )
+            print(f"Indexed {len(chunks)} chunks")
 
         else:
-
             print("Document already indexed. Skipping embedding.")
 
+# ---------------- RERANKER ----------------
 
 rerank_model = HuggingFaceCrossEncoder(
         model_name="cross-encoder/ms-marco-MiniLM-L-6-v2")
