@@ -1,4 +1,3 @@
-from semantic_cache import save_to_cache
 from chunk_retriever import embedding, index
 import uuid
 

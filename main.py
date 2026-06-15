@@ -3,9 +3,14 @@ from ingestion import get_docs
 
 def main():
 
-    query = input("Ask a question...")
+    while True:
+        query = input("\nAsk a question (type 'exit' to quit): ")
 
-    result = graph.invoke(
+        if query.lower() in ['exit', 'quit']:
+            print("Exiting...")
+            break
+
+        result = graph.invoke(
         {
             "query" : query,
             "document" : [],
@@ -14,29 +19,30 @@ def main():
             "context": "",
             "model_used": "",
             "token_usage": 0
-        }
-    )
+        })
 
-    evaluation = result["result"]
-    cache_hit = result.get("cache_hit", False)
+    
 
-    print("\n========== ANSWER ==========\n")
-    print(result["answer"]["answer"])
+        evaluation = result["result"]
+        cache_hit = result.get("cache_hit", False)
 
-    print("\n========== INFO ==========\n")
+        print("\n========== ANSWER ==========\n")
+        print(result["answer"]["answer"])
 
-    if cache_hit:
-        print("Source           : Semantic Cache")
-        print("Evaluator        : Skipped")
-    else:
-        print("Source           : RAG Pipeline")
-        print(f"Relevant         : {evaluation.relevant}")
-        print(f"Grounded         : {evaluation.grounded}")
-        print(f"Answer Question  : {evaluation.answer_question}")
+        print("\n========== INFO ==========\n")
 
-
-
+        if cache_hit:
+            print("Source           : Semantic Cache")
+            print("Evaluator        : Skipped")
+        else:
+            print("Source           : RAG Pipeline")
+            print(f"Relevant         : {evaluation.relevant}")
+            print(f"Grounded         : {evaluation.grounded}")
+            print(f"Answer Question  : {evaluation.answer_question}")
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\n\nExiting via Ctrl+C...")

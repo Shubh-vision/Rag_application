@@ -1,4 +1,3 @@
-from semantic_cache import get_cached_answer
 from state import AgentState
 from chunk_retriever import embedding, index
 
