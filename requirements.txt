@@ -1,0 +1,48 @@
+
+# LangChain Ecosystem
+langchain
+langchain-community
+langchain-huggingface
+langchain-groq
+langchain-pinecone
+langgraph
+langchain-google-genai
+langchain-mistralai
+
+
+# Embeddings / Transformers
+sentence-transformers
+transformers
+huggingface-hub
+langchain-text-splitters
+
+
+
+# Vector Database
+pinecone
+
+
+# Retrieval
+rank-bm25
+
+
+# Document Processing
+pypdf
+python-docx
+beautifulsoup4
+
+
+# Utilities
+python-dotenv
+pydantic
+pandas
+litellm
+langsmith
+sentence-transformers 
+scikit-learn 
+numpy
+supabase 
+psycopg2-binary
+streamlit
+torchvision
+lxml
