@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import TypedDict, Dict
+from typing import TypedDict, Dict, Any
 
 # State for Evaluator
 
@@ -18,6 +18,7 @@ class AgentState(TypedDict):
     model_used: str
     token_usage: int
     cache_hit: bool
+    retriever: Any
     
 
 

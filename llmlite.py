@@ -1,10 +1,13 @@
 from litellm import completion
-from litellm import completion_cost
 from langchain_core.runnables import RunnableLambda
 import os
 
 from dotenv import load_dotenv
 load_dotenv()
+
+# RunnableLamdba - This is used to convert a normal Python function into a LangChain Runnable.
+# LangGraph and LangChain pipelines expect Runnables.
+
 
 
 def call_llm(prompt):
